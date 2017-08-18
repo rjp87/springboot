@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cecgw.virtualresource.mapper.BusineSystemMapper">
+    <resultMap id="BaseResultMap" type="com.cecgw.virtualresource.entity.BusineSystemEntity" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="domain" property="domain" jdbcType="VARCHAR" />
+        <result column="tenant_id" property="tenantId" jdbcType="BIGINT" />
+    </resultMap>
+     
+    <sql id="Base_Column_List" >
+        id, name, description, url, domain, tenant_id
+    </sql>
+ 
+    <select id="getAllBusineSystemes" resultMap="BaseResultMap"  >
+       SELECT 
+       <include refid="Base_Column_List" />
+       FROM tbl_business_sys
+    </select>
+ 
+    <select id="getBusineSystemInfoById" parameterType="java.lang.String" resultMap="BaseResultMap" >
+       SELECT 
+       <include refid="Base_Column_List" />
+       FROM tbl_business_sys
+       WHERE id = #{id}
+    </select>
+ 
+    <insert id="addBusineSystem" parameterType="com.cecgw.virtualresource.entity.BusineSystemEntity" >
+       INSERT INTO 
+            tbl_business_sys
+            (id, name, description, url, domain, tenant_id) 
+        VALUES
+            (#{id}, #{name}, #{description}, #{url}, #{domain}, #{tenantId})
+    </insert>
+     
+    <update id="updateBusineSystemInfo" parameterType="com.cecgw.virtualresource.entity.BusineSystemEntity" >
+       UPDATE 
+            tbl_business_sys 
+       SET 
+        <if test="name != null">name = #{name},</if>
+        <if test="description != null">description = #{description},</if>
+        url = #{url},
+        domain = #{domain},
+        tenant_id = #{tenantId},
+        
+       WHERE 
+            id = #{id}
+    </update>
+     
+    <delete id="deleteBusineSystemById" parameterType="java.lang.String" >
+       DELETE FROM
+             tbl_business_sys 
+       WHERE 
+             id =#{id}
+    </delete>
+</mapper>
